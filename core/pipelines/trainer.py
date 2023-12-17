@@ -63,7 +63,7 @@ class Trainer(object):
     
     def setup_dataset(self, cfg, split, demo_input=None):
         if self.is_master_process():
-            print('Setting up dataset...')
+            print(f'Setting up dataset:{split}...')
 
         if split == 'train':
             self.train_dataset = get_dataset(cfg.DATASET.NAME)(self.cfg.DATASET.ROOT_DIR, self.cfg.DATASET.SPEAKER, 'train', self.cfg)
@@ -163,7 +163,7 @@ class Trainer(object):
         map_location = {'cuda:0' : 'cuda:%d' % self.get_rank()}
         if self.is_master_process():
             print('Setting up base directory...')
-        dt = str(datetime.now()).replace('.', '-').replace(':', '-').replace(' ', '_')
+        dt = datetime.now().strftime("%Y%m%d%H%M%S")
         exp_tag = '_'.join([dt, exp_tag])
 
         if is_training:

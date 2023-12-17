@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
         test_df = df.iloc[train_test_split + idle_num:]
         # change the ``dataset'' column in test_df to be ``dev''
-        test_df.loc[:, "dataset"] = "val"
+        test_df.loc[:, "dataset"] = "dev"
         ls_test_df.append(test_df)
 
         print(f"file: {os.path.basename(csv_path)}, total_num: {total_num}, "

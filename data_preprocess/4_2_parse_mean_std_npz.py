@@ -2,7 +2,9 @@ import os
 import sys
 import numpy as np
 import cv2
+import sys
 
+sys.path.append('/mllab/codehub/SpeechDrivesTemplates')
 from core.utils.keypoint_visualization import draw_body_parts
 
 

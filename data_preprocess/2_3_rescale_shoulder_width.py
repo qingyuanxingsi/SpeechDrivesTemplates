@@ -68,6 +68,7 @@ def cal_speaker_scalar_2oliver(vid_dir):
     oliver_shoulder_dist = 331.0850066245443
 
     speaker_shoulder_distance = cal_mean_shoulder_distance(vid_dir)
+    print(f"speaker_shoulder_distance: {speaker_shoulder_distance}")
     speaker_scalar = oliver_shoulder_dist * oliver_scalar / speaker_shoulder_distance
     return speaker_scalar
 
@@ -81,6 +82,7 @@ def override_pose_file_with_scalar(tuple_in):
 
 def rescale_shoulder_width_per_video(vid_dir):
     scalar = cal_speaker_scalar_2oliver(vid_dir)
+    print(f"=> Scalar:{scalar}")
     ls_npy = sorted(os.listdir(vid_dir))
     ls_npy = [os.path.join(vid_dir, fn_npy) for fn_npy in ls_npy]
 
@@ -101,6 +103,8 @@ def rescale_shoulder_width_per_video(vid_dir):
 
 
 if __name__ == "__main__":
+    if os.path.exists(DIR_RESCALED_POSE):
+        shutil.rmtree(DIR_RESCALED_POSE)
     if not os.path.exists(DIR_RESCALED_POSE):
         print(f"Copying dir_rescaled_pose...")
         # shutil.copytree(DIR_CLEANED_POSE, DIR_RESCALED_POSE)

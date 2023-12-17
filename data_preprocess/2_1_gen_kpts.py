@@ -16,9 +16,9 @@ try:
         import pyopenpose as op
     else:
         # Change these variables to point to the correct folder (Release/x64 etc.)
-        sys.path.append('../../python');
+        # sys.path.append('../../python');
         # If you run `make install` (default path is `/usr/local/python` for Ubuntu), you can also access the OpenPose/python module from there. This will install OpenPose and the python library at your desired installation path. Ensure that this is in your python path in order to use it.
-        # sys.path.append('/usr/local/python')
+        sys.path.append('/usr/local/python')
         from openpose import pyopenpose as op
 except ImportError as e:
     print('Error: OpenPose library could not be found. Did you enable `BUILD_PYTHON` in CMake and have this Python script in the right folder?')
@@ -26,7 +26,7 @@ except ImportError as e:
 
 # Custom Params (refer to include/openpose/flags.hpp for more parameters)
 params = dict()
-params["model_folder"] = "../../../models/"
+params["model_folder"] = "/mllab/codehub/openpose/models/"
 params["face"] = True
 params["hand"] = True
 
@@ -39,6 +39,7 @@ opWrapper.start()
 def get_keypoints(frame_dir,folder,img_path,pose_dir):
     filename, file_extension = os.path.splitext(img_path)
     imageToProcess = os.path.join(frame_dir,folder,img_path)
+    print(f"> Processing {imageToProcess}...")
     npy_store_path = os.path.join(pose_dir,folder,filename)
 
     datum = op.Datum()
@@ -46,12 +47,16 @@ def get_keypoints(frame_dir,folder,img_path,pose_dir):
     datum.cvInputData = imageToProcess
     opWrapper.emplaceAndPop(op.VectorDatum([datum]))
 
-    if datum.poseKeypoints.shape == (1, 25, 3) and datum.faceKeypoints.shape == (1, 70, 3) and datum.handKeypoints[0].shape == (1, 21, 3) and datum.handKeypoints[1].shape == (1, 21, 3):
-        # only collect frames with complete pose predictions
-        
-        npy = np.concatenate([datum.poseKeypoints,datum.faceKeypoints,datum.handKeypoints[0],datum.handKeypoints[1]],axis=1).squeeze()
-        npy = npy.transpose(1,0)
-        np.save(npy_store_path,npy)
+    try:
+        if datum.poseKeypoints.shape == (1, 25, 3) and datum.faceKeypoints.shape == (1, 70, 3) and datum.handKeypoints[0].shape == (1, 21, 3) and datum.handKeypoints[1].shape == (1, 21, 3):
+            # only collect frames with complete pose predictions
+            
+            npy = np.concatenate([datum.poseKeypoints,datum.faceKeypoints,datum.handKeypoints[0],datum.handKeypoints[1]],axis=1).squeeze()
+            npy = npy.transpose(1,0)
+            print(f"Saving file to {npy_store_path}...")
+            np.save(npy_store_path,npy)
+    except Exception as _:
+        pass
 
 
 if __name__=="__main__":

@@ -6,6 +6,7 @@ from multiprocessing import Pool, RLock, freeze_support
 import numpy as np
 import pandas as pd
 import tqdm
+import sys
 
 
 def cal_mean_global(tuple_in):
@@ -225,6 +226,7 @@ def cal_mean_std():
     np_std_save = np.expand_dims(np.average(np.average(ans, axis=0), axis=0), axis=0)
 
     if not args.debug:
+        print(f"=> Saving to {fp_mean_std_npz}...")
         np.savez(fp_mean_std_npz, mean=np_avg_save, std=np_std_save)
 
         # np_avg_save = np_avg_save.squeeze(0)

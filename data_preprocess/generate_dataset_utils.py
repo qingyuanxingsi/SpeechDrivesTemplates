@@ -14,7 +14,7 @@ def dir_video2frames(video_dir, target_dir, fps=15):
     assert fps in [15, 25]
     print("====== FN dir_video2frames ======")
     if not os.path.exists(target_dir):
-        os.mkdir(target_dir)
+        os.makedirs(target_dir)
     else:
         print(f"Warning: target directory {target_dir} exists!")
         # input("Please confirm by pressing any key, ABORT by pressing Ctrl+c")

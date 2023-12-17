@@ -19,7 +19,7 @@ parser = argparse.ArgumentParser(description='Extract data for the specified spe
 parser.add_argument('-b', '--base_dataset_path', default=None, help="dataset root path", required=True)
 parser.add_argument('-s', '--speaker', default='Default Speaker Name', required=True)
 
-parser.add_argument('-np', '--num_processes', type=int, default=1)
+parser.add_argument('-np', '--num_processes', type=int, default=2)
 parser.add_argument('--restart', action="store_true", help="By default this code would resume from last execution,"
                                                            "using existing csv files. Use argument --restart if want"
                                                            "to start the generate_clips process from the beginning.")
@@ -159,6 +159,7 @@ def gen_data_samples(dict_args):
     interval_end = frame_idx_to_time(end_frame_idx)
 
     audio_out_path = AUDIO_FN_TEMPLATE % (speaker_name, video_nm, interval_start, interval_end)
+    print(f"audio_out_path: {audio_out_path}")
     save_audio_sample_from_video(get_video_path(video_nm), audio_out_path, interval_start, interval_end)
 
     interval_start = pd.to_timedelta(frame_idx_to_time(start_frame_idx))
@@ -226,7 +227,6 @@ if __name__ == "__main__":
     # vid_frame_dir = "/group/projects/voice2pose/data/luoxiang/frames_15fps_720p/BV1264y1c7e6"
     # total_length = len(os.listdir(vid_frame_dir))
     # gen_data_samples(start_frame_idx=76, total_length=total_length, video_nm="BV1264y1c7e6")
-
     ls_vid = os.listdir(FRAME_DIR_PATH)
     # start_frame_idx, total_length, video_nm
     ls_args = [{"video_nm": i,

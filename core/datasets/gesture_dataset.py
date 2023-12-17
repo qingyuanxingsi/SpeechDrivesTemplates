@@ -85,7 +85,8 @@ class GestureDataset(Dataset):
             clip = self.clips.iloc[idx]
 
             speaker = clip['speaker']
-            arr = np.load(os.path.join(self.root_dir, clip['pose_fn']))
+            # arr = np.load(os.path.join(self.root_dir, clip['pose_fn']))
+            arr = np.load(clip['pose_fn'])
 
             audio = arr['audio']
             audio_length, num_frames = parse_audio_length(self.cfg.AUDIO_LENGTH, self.cfg.AUDIO_SR, self.cfg.FPS)
@@ -122,7 +123,7 @@ class GestureDataset(Dataset):
         return sample
 
     def get_csv_file(self, root_dir):
-        csv_path = os.path.join(root_dir, f'processed_137.csv')
+        csv_path = os.path.join(root_dir, f'clips.csv')
         if not os.path.exists(csv_path):
             raise FileNotFoundError('No csv file: %s' % csv_path)
         csv_file = pd.read_csv(csv_path)

@@ -59,14 +59,15 @@ DIR_CLEANED_POSE = os.path.join(DATASET_PATH, "tmp", "cleaned_pose_2d")
 
 
 if __name__ == "__main__":
+    if os.path.exists(DIR_CLEANED_POSE):
+        print("cleaned_pose_2d dir already exists")
+        shutil.rmtree(DIR_CLEANED_POSE)
     if not os.path.exists(DIR_CLEANED_POSE):
         print("Copying dir_raw_pose to dir_cleaned_pose...")
         # shutil.copytree(DIR_RAW_POSE, DIR_CLEANED_POSE)
         command = f"cp -r {DIR_RAW_POSE} {DIR_CLEANED_POSE}"
         print(f'command: {command}')
         os.system(command)
-    else:
-        print("cleaned_pose_2d dir already exists")
 
     ls_vid = sorted(os.listdir(DIR_CLEANED_POSE))
     if args.num_processes > 1:

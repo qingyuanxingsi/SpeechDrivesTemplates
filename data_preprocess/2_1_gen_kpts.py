@@ -5,6 +5,7 @@ import cv2
 import os
 from sys import platform
 import numpy as np
+from tqdm import tqdm
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 try:
@@ -39,7 +40,7 @@ opWrapper.start()
 def get_keypoints(frame_dir,folder,img_path,pose_dir):
     filename, file_extension = os.path.splitext(img_path)
     imageToProcess = os.path.join(frame_dir,folder,img_path)
-    print(f"> Processing {imageToProcess}...")
+    # print(f"> Processing {imageToProcess}...")
     npy_store_path = os.path.join(pose_dir,folder,filename)
 
     datum = op.Datum()
@@ -53,7 +54,7 @@ def get_keypoints(frame_dir,folder,img_path,pose_dir):
             
             npy = np.concatenate([datum.poseKeypoints,datum.faceKeypoints,datum.handKeypoints[0],datum.handKeypoints[1]],axis=1).squeeze()
             npy = npy.transpose(1,0)
-            print(f"Saving file to {npy_store_path}...")
+            # print(f"Saving file to {npy_store_path}...")
             np.save(npy_store_path,npy)
     except Exception as _:
         pass
@@ -90,10 +91,10 @@ if __name__=="__main__":
     frame_dir = f"{base_dir}/frames/"
     pose_dir = f"{base_dir}/tmp/raw_pose_2d/"
     cnt = 0
-    for i in os.listdir(frame_dir):
+    for i in tqdm(os.listdir(frame_dir)):
         if not os.path.exists(os.path.join(pose_dir,i)):
             os.makedirs(os.path.join(pose_dir,i))
-        for j in os.listdir(os.path.join(frame_dir, i)):
+        for j in tqdm(os.listdir(os.path.join(frame_dir, i))):
             if j.endswith(".jpg"):
                 if not os.path.exists(os.path.join(pose_dir,i,j.split(".")[0]+'.npy')):
                     cnt+=1

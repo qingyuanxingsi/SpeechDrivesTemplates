@@ -24,8 +24,8 @@ def cal_mean_global(tuple_in):
 
                 # in case the pose_np is not detected, the pose_np value would be too small, which would effect the
                 # -- calculation of mean and std
-                if abs(pose_np[i, 0, i_kpt] + save_pose_root) < 5 and \
-                        abs(pose_np[i, 1, i_kpt] + save_pose_root) < 5:
+                if abs(pose_np[i, 0, i_kpt] + save_pose_root[0]) < 5 and \
+                        abs(pose_np[i, 1, i_kpt] + save_pose_root[1]) < 5:
                     continue
                 weight = num[i, i_kpt] / (num[i, i_kpt] + 1)
                 np_avg[i, :, i_kpt] = np_avg[i, :, i_kpt] * weight + (1 - weight) * (pose_np[i, :2, i_kpt])

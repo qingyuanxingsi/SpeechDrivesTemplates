@@ -135,8 +135,8 @@ def gen_data_samples(dict_args):
           f"args are: start_frame_idx:{start_frame_idx}, "
           f"total_length:{total_length}, "
           f"video_nm:{video_nm}, ")
-    if os.path.exists(os.path.join(TMPCSV_DIR_PATH, f"tmp_{video_nm}.csv")):
-        return pd.read_csv(os.path.join(TMPCSV_DIR_PATH, f"tmp_{video_nm}.csv"))
+    # if os.path.exists(os.path.join(TMPCSV_DIR_PATH, f"tmp_{video_nm}.csv")):
+    #     return pd.read_csv(os.path.join(TMPCSV_DIR_PATH, f"tmp_{video_nm}.csv"))
     data_dict = {'dataset': [], 'start': [], 'end': [], 'interval_id': [],
                  'pose_fn': [], 'audio_fn': [], 'video_fn': [], 'speaker': []}
 
